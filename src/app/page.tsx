@@ -14,8 +14,8 @@ import {
 
 
 export default async function Home() {
-  let church: ChurchResponse
-  let visual: ChurchVisualResponse
+  let church: ChurchResponse = {} as ChurchResponse
+  let visual: ChurchVisualResponse = {} as ChurchVisualResponse
   let events: EventResponse[] = []
   let worships: WorshipResponse[] = []
   let prayers: PrayerResponse[] = []
@@ -37,9 +37,12 @@ export default async function Home() {
 
   return (
     <main className="w-full sm:max-w-1/2 md:max-w-4/6 m-auto">
-      <header></header>
+      <header>
+        <Image src={visual.logomarcaMenu._optimized[0].url} width={200} height={65} alt="Nova Batista" />
+      </header>
 
       {/* <section id="live"></section> */}
+
       <section id="events" className="grid grid-cols-3 gap-4">
         {events.map((event) => (
           <div className="relative" key={event.id}>
@@ -50,7 +53,9 @@ export default async function Home() {
           </div>
         ))}
       </section>
+
       <section id="gcs"></section>
+
       <section id="prayers" className="grid grid-cols-3 gap-4">
         {prayers.map((pray) => (
           <div key={pray.id} className="p-4 border rounded flex flex-col justify-between">
@@ -63,6 +68,7 @@ export default async function Home() {
           </div>
         ))}
       </section>
+
       <section id="colaborate"></section>
 
       <footer></footer>
