@@ -8,12 +8,14 @@ import {
   inPeaceServiceChurchInfo,
   inPeaceServiceEvents,
   inPeaceServicePrayers,
+  inPeaceServiceMinistries,
   inPeaceServiceVisual,
   inPeaceServiceWorshipDates,
 } from '@/service/inpeace'
 import {YoutubeItemEntry, YoutubeItensList} from '@/interface/youtube/search'
 import {youtubeServiceLive, youtubeServiceRecents} from '@/service/youtube'
 import {formateDateLocale} from '@/date/date'
+import {MinistriesResponse} from '@/interface/inpeace/ministrie'
 
 
 export default async function Home() {
@@ -22,6 +24,8 @@ export default async function Home() {
   let events: EventResponse[] = []
   let worships: WorshipResponse[] = []
   // let prayers: PrayerResponse[] = []
+  let ministries: MinistriesResponse = []
+
   let latestVideos: YoutubeItensList = []
   let liveVideo: YoutubeItemEntry | undefined = undefined
 
@@ -30,6 +34,8 @@ export default async function Home() {
   const fetchWorshipDates = async () => (worships = await inPeaceServiceWorshipDates());
   // const fetchPrayers = async () => (prayers = await inPeaceServicePrayers());
   const fetchChurchInfo = async () => (church = await inPeaceServiceChurchInfo());
+  const fetchMinistries = async () => (ministries = await inPeaceServiceMinistries());
+
   const fetchLatestVideos = async () => (latestVideos = await youtubeServiceRecents());
   const fetchLiveVideo = async () => (liveVideo = await youtubeServiceLive());
 
@@ -40,13 +46,16 @@ export default async function Home() {
     fetchWorshipDates(),
     // fetchPrayers(),
     fetchChurchInfo(),
+    fetchMinistries(),
+    // --
     fetchLatestVideos(),
     fetchLiveVideo(),
   ])
 
   const featuredVideo = liveVideo ?? latestVideos.shift()
+  const churchDirectionUrl = `https://www.google.com/maps/dir//${church.latitude},${church.longitude}`
 
-  const renameYTVideo = (video: YoutubeItemEntry): string => {
+  function renameYTVideo(video: YoutubeItemEntry): string {
     const pieces = video.snippet.title.split('-')
     const newName = [
       pieces[0],
@@ -55,6 +64,7 @@ export default async function Home() {
 
     return newName.join(' - ')
   }
+
   return (
     <main className="w-11/12 sm:max-w-10/12 md:max-w-8/12 m-auto">
       <header className="flex justify-center items-center">
@@ -73,26 +83,30 @@ export default async function Home() {
         </div>
       </section>}
 
-      <section id="videos-latest" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {latestVideos.map((video) => (
-          <a key={video.id.videoId} className="relative" href={`https://www.youtube.com/watch?v=${video.id.videoId}`} target="_blank" rel="noreferrer">
-            <Image src={video.snippet.thumbnails.high.url} width={480} height={360} alt={video.snippet.title}/>
-            <div className="absolute bottom-0 left-0 right-0 bg-black opacity-90 text-white text-center py-2 px-4">
-              {renameYTVideo(video)}
-            </div>
-          </a>
-        ))}
+      <section id="videos-latest">
+        <h2>Cultos</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {latestVideos.map((video) => (
+            <a key={video.id.videoId} className="relative" href={`https://www.youtube.com/watch?v=${video.id.videoId}`} target="_blank" rel="noreferrer">
+              <Image src={video.snippet.thumbnails.high.url} width={480} height={360} alt={video.snippet.title}/>
+              <div className="absolute bottom-0 left-0 right-0 bg-black opacity-90 text-white text-center py-2 px-4">
+                {renameYTVideo(video)}
+              </div>
+            </a>
+          ))}
+        </div>
       </section>
 
-      <section id="events" className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        {events.map((event) => (
-          <div className="relative" key={event.id}>
-            <Image src={event.image._optimized[0].url} width={470} height={370} alt={event.nome} />
-            <div className="bottom-0 left-0 right-0 bg-black opacity-90 text-white text-center py-2 px-4">
-              {event.nome}
+      <section id="events">
+        <h2>Eventos</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {events.map((event) => (
+            <div className="relative" key={event.id}>
+              <Image src={event.image._optimized[0].url} width={470} height={370} alt={event.nome} />
+
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </section>
 
       <section id="gcs"></section>
@@ -112,8 +126,37 @@ export default async function Home() {
 
       <section id="colaborate"></section>
 
-      <footer>
+      <footer className="mt-16 py-8 border-t text-gray-500">
+        <div className="flex flex-row justify-between">
+          <div className="">
+            <h4 className="text-xl font-semibold">Programação</h4>
+            <ul className="list-none mt-2 grid grid-cols-1 gap-2">
+              {worships.map((worship) => (
+                <li key={worship.id}>
+                  {worship.descricao}
+                </li>
+              ))}
+            </ul>
+          </div>
 
+          <div className="">
+            <h4 className="text-xl font-semibold">Ministérios</h4>
+            <ul className="list-none mt-2 grid grid-cols-2 gap-2">
+              {ministries.map((entry) => (
+                <li key={entry.id}>
+                  {entry.nome.replace(/Ministério\s?(de\s?)?/, '')}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-6 text-center">
+          <a href={churchDirectionUrl} target="_blank">{church.endereco}</a>
+        </div>
+        <div className="mt-2 text-xs text-center">
+          &copy; {new Date().getFullYear()} {church.nome || "Igreja"} - Todos os direitos reservados. | Powered by <a href="https://www.inpeace.com.br" target="_blank" rel="noopener noreferrer" className="hover:underline">Inpeace</a>
+        </div>
       </footer>
     </main>
   );
