@@ -36,11 +36,11 @@ export default async function Home() {
   ])
 
   return (
-    <main>
+    <main className="w-full sm:max-w-1/2 md:max-w-4/6 m-auto">
       <header></header>
 
       {/* <section id="live"></section> */}
-      <section id="events" className="grid grid-cols-4 gap-4">
+      <section id="events" className="grid grid-cols-3 gap-4">
         {events.map((event) => (
           <div className="relative" key={event.id}>
             <Image src={event.image._optimized[0].url} width={470} height={370} alt={event.nome} />
@@ -51,7 +51,18 @@ export default async function Home() {
         ))}
       </section>
       <section id="gcs"></section>
-      <section id="prayers"></section>
+      <section id="prayers" className="grid grid-cols-3 gap-4">
+        {prayers.map((pray) => (
+          <div key={pray.id} className="p-4 border rounded flex flex-col justify-between">
+            {(pray.motivo || pray.oracaoMotivo) && <span className="text-md text-left">{pray.oracaoMotivo ?? pray.motivo}</span>}
+            <p>
+              {pray.mensagem.substring(0, 100)}
+              {pray.mensagem.length > 100 && "..."}
+            </p>
+            <span className="block text-sm text-right">{pray.nome}</span>
+          </div>
+        ))}
+      </section>
       <section id="colaborate"></section>
 
       <footer></footer>
