@@ -9,6 +9,7 @@ import event from '../../mocks/event.json'
 import prayer from '../../mocks/prayer.json'
 import visual from '../../mocks/visual.json'
 import worship from '../../mocks/worship.json'
+import fetcher from '@/http/fetcher'
 
 const {
   INPEACE_CHURCH_ID,
@@ -18,12 +19,7 @@ const {
 } = process.env;
 
 async function simpleFetch<Response>(url: string, rootProp?:string): Promise<Response> {
-  const request = await fetch(url)
-  const response = await request.json()
-  /* console.log(url)
-  // console.log(response)
-  console.log(JSON.stringify(response))
-  console.log('---------------------------------------') */
+  const response = await fetcher.get(url)
 
   if(rootProp){
     return response[rootProp];

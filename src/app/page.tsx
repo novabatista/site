@@ -11,6 +11,9 @@ import {
   inPeaceServiceVisual,
   inPeaceServiceWorshipDates,
 } from '@/service/inpeace'
+import {YoutubeItemEntry, YoutubeItensList} from '@/interface/youtube/search'
+import {youtubeServiceLive, youtubeServiceRecents} from '@/service/youtube'
+import {formateDateLocale} from '@/date/date'
 
 
 export default async function Home() {
@@ -18,32 +21,70 @@ export default async function Home() {
   let visual: ChurchVisualResponse = {} as ChurchVisualResponse
   let events: EventResponse[] = []
   let worships: WorshipResponse[] = []
-  let prayers: PrayerResponse[] = []
+  // let prayers: PrayerResponse[] = []
+  let latestVideos: YoutubeItensList = []
+  let liveVideo: YoutubeItemEntry | undefined = undefined
 
   const fetchVisual = async () => (visual = await inPeaceServiceVisual())
   const fetchEvents = async () => (events = await inPeaceServiceEvents());
   const fetchWorshipDates = async () => (worships = await inPeaceServiceWorshipDates());
-  const fetchPrayers = async () => (prayers = await inPeaceServicePrayers());
+  // const fetchPrayers = async () => (prayers = await inPeaceServicePrayers());
   const fetchChurchInfo = async () => (church = await inPeaceServiceChurchInfo());
+  const fetchLatestVideos = async () => (latestVideos = await youtubeServiceRecents());
+  const fetchLiveVideo = async () => (liveVideo = await youtubeServiceLive());
 
 
   await Promise.allSettled([
     fetchVisual(),
     fetchEvents(),
     fetchWorshipDates(),
-    fetchPrayers(),
+    // fetchPrayers(),
     fetchChurchInfo(),
+    fetchLatestVideos(),
+    fetchLiveVideo(),
   ])
 
+  const featuredVideo = liveVideo ?? latestVideos.shift()
+
+  const renameYTVideo = (video: YoutubeItemEntry): string => {
+    const pieces = video.snippet.title.split('-')
+    const newName = [
+      pieces[0],
+      formateDateLocale(new Date(video.snippet.publishedAt)),
+    ]
+
+    return newName.join(' - ')
+  }
   return (
-    <main className="w-full sm:max-w-1/2 md:max-w-4/6 m-auto">
-      <header>
+    <main className="w-11/12 sm:max-w-10/12 md:max-w-8/12 m-auto">
+      <header className="flex justify-center items-center">
         <Image src={visual.logomarcaMenu._optimized[0].url} width={200} height={65} alt="Nova Batista" />
       </header>
 
-      {/* <section id="live"></section> */}
+      {(featuredVideo) && <section id="video-featured" className="">
+        <div className="w-full h-[80vh] mb-4">
+          <iframe
+            className="w-full h-full"
+            src={`https://www.youtube.com/embed/${featuredVideo.id.videoId}?autoplay=0&mute=1`}
+            title="YouTube video player" frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen></iframe>
+        </div>
+      </section>}
 
-      <section id="events" className="grid grid-cols-3 gap-4">
+      <section id="videos-latest" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {latestVideos.map((video) => (
+          <a key={video.id.videoId} className="relative" href={`https://www.youtube.com/watch?v=${video.id.videoId}`} target="_blank" rel="noreferrer">
+            <Image src={video.snippet.thumbnails.high.url} width={480} height={360} alt={video.snippet.title}/>
+            <div className="absolute bottom-0 left-0 right-0 bg-black opacity-90 text-white text-center py-2 px-4">
+              {renameYTVideo(video)}
+            </div>
+          </a>
+        ))}
+      </section>
+
+      <section id="events" className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {events.map((event) => (
           <div className="relative" key={event.id}>
             <Image src={event.image._optimized[0].url} width={470} height={370} alt={event.nome} />
@@ -56,7 +97,7 @@ export default async function Home() {
 
       <section id="gcs"></section>
 
-      <section id="prayers" className="grid grid-cols-3 gap-4">
+      {/* <section id="prayers" className="grid grid-cols-3 gap-4">
         {prayers.map((pray) => (
           <div key={pray.id} className="p-4 border rounded flex flex-col justify-between">
             {(pray.motivo || pray.oracaoMotivo) && <span className="text-md text-left">{pray.oracaoMotivo ?? pray.motivo}</span>}
@@ -67,11 +108,13 @@ export default async function Home() {
             <span className="block text-sm text-right">{pray.nome}</span>
           </div>
         ))}
-      </section>
+      </section> */}
 
       <section id="colaborate"></section>
 
-      <footer></footer>
+      <footer>
+
+      </footer>
     </main>
   );
 }
