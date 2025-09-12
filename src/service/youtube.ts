@@ -20,6 +20,13 @@ export async function youtubeServiceSearch(params: QueryStringObject = {}): Prom
 }
 
 export async function youtubeServiceLive(): Promise<YoutubeItemEntry|undefined>{
+  const today = new Date()
+  const weekday = today.getDay()
+  const notWorshipDay = [0, 3].includes(weekday)
+  if(notWorshipDay){
+    return
+  }
+
   const lives = await youtubeServiceSearch({
     part: 'snippet,id',
     eventType: 'live',
@@ -28,11 +35,7 @@ export async function youtubeServiceLive(): Promise<YoutubeItemEntry|undefined>{
     channelId: YOUTUBE_CHANNEL_ID,
   })
 
-  if(lives.length === 0){
-    return
-  }
-
-  return lives[0]
+  return lives?.[0]
 }
 
 export async function youtubeServiceRecents(): Promise<YoutubeItensList>{
