@@ -24,8 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+    <head>
+      <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"/>
+    </head>
+    <body
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       </body>
