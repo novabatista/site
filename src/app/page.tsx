@@ -16,8 +16,9 @@ import {YoutubeItemEntry, YoutubeItensList} from '@/interface/youtube/search'
 import {youtubeServiceLive, youtubeServiceRecents} from '@/service/youtube'
 import {formateDateLocale} from '@/date/date'
 import {MinistriesResponse} from '@/interface/inpeace/ministrie'
+import Button from '@/components/server/Button'
 
-
+const gcURL = process.env.GCS_URL;
 export default async function Home() {
   let church: ChurchResponse = {} as ChurchResponse
   let visual: ChurchVisualResponse = {} as ChurchVisualResponse
@@ -109,7 +110,24 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="gcs"></section>
+      <section id="gcs" className="">
+        <h2>GCs</h2>
+        <p>
+          Um GC (Grupo de Crescimento) é como a igreja se encontra nas casas, exatamente como foi pensado na Bíblia. É o lugar onde você não é apenas mais um na multidão, mas alguém que vai ser cuidado, ouvido e acompanhado de perto.
+        </p>
+        <iframe
+          className="w-full h-[220px]"
+          src={`${gcURL}/embed?type=carousel&map=0`}
+          title="YouTube video player" frameBorder="0"
+          allow="clipboard-write; encrypted-media; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          ></iframe>
+
+        <div className="mt-2 text-center">
+          <Button asLink href={gcURL}>venha conhecer um GC</Button>
+        </div>
+
+      </section>
 
       {/* <section id="prayers" className="grid grid-cols-3 gap-4">
         {prayers.map((pray) => (
