@@ -53,14 +53,16 @@ export default async function Home() {
     fetchLiveVideo(),
   ])
 
-  const featuredVideo = liveVideo ?? latestVideos.shift()
   const churchDirectionUrl = `https://www.google.com/maps/dir//${church.latitude},${church.longitude}`
+  const featuredVideo = liveVideo ?? latestVideos.shift()
+  latestVideos = latestVideos.slice(0, 3)
 
   function renameYTVideo(video: YoutubeItemEntry): string {
     const pieces = video.snippet.title.split('-')
     const newName = [
       pieces[0],
-      formateDateLocale(new Date(video.snippet.publishedAt)),
+      pieces[2],
+      // formateDateLocale(new Date(video.snippet.publishedAt)),
     ]
 
     return newName.join(' - ')

@@ -42,7 +42,7 @@ export async function youtubeServiceRecents(): Promise<YoutubeItensList>{
   const latests = await youtubeServiceSearch({
     part: 'snippet,id',
     order: 'date',
-    maxResults: '5',
+    maxResults: '6',
     channelId: YOUTUBE_CHANNEL_ID,
   })
 
