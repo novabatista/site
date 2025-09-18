@@ -38,6 +38,10 @@ export function inPeaceServiceEvents(): Promise<EventResponse[]> {
   return simpleFetch<EventResponse[]>(`${INPEACE_API_URL}/igreja/${INPEACE_CHURCH_SLUG}/evento`, 'eventos')
 }
 
+export function inPeaceServiceEventById(id:number): Promise<EventResponse> {
+  return simpleFetch<EventResponse>(`${INPEACE_API_URL}/igreja/${INPEACE_CHURCH_SLUG}/evento/${id}`)
+}
+
 export function inPeaceServiceWorshipDates(): Promise<WorshipResponse[]> {
   return Promise.resolve(worship.cultos)
   return simpleFetch<WorshipResponse[]>(`${INPEACE_API_URL}/culto/${INPEACE_CHURCH_ALIAS}?igreja=${INPEACE_CHURCH_ID}`, 'cultos')

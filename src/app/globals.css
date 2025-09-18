@@ -47,3 +47,39 @@ section > h2 {
 section > p {
   margin-bottom: 0.8rem;
 }
+
+
+#event-detail {
+
+}
+#event-detail .description p {
+  margin-bottom: 0.6rem;
+}
+#event-detail .description p a {
+  color: var(--foreground-dark);
+  text-decoration: underline;
+}
+
+#event-detail .datetime_date, #event-detail .datetime_time, #event-detail .location_address {
+  font-weight: 600;
+  margin-right: 0.3rem;
+}
+
+.modal {
+
+}
+
+.modal .header {
+
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.6rem;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: var(--foreground-light);
+}
+.modal .header_title {
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.modal .modal-content {}

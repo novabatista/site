@@ -17,6 +17,7 @@ import {youtubeServiceLive, youtubeServiceRecents} from '@/service/youtube'
 import {formateDateLocale} from '@/date/date'
 import {MinistriesResponse} from '@/interface/inpeace/ministrie'
 import Button from '@/components/server/Button'
+import EventItem from '@/components/client/Event/EventItem'
 
 const gcURL = process.env.GCS_URL;
 export default async function Home() {
@@ -103,12 +104,7 @@ export default async function Home() {
       <section id="events">
         <h2>Eventos</h2>
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          {events.map((event) => (
-            <div className="relative" key={event.id}>
-              <Image src={event.image._optimized[0].url} width={470} height={370} alt={event.nome} />
-
-            </div>
-          ))}
+          {events.map((event) => <EventItem key={event.id} event={event} />)}
         </div>
       </section>
 
