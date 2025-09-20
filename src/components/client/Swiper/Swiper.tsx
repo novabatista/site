@@ -28,6 +28,7 @@ export default function Swiper({controls = true, perPage = 10, children}) {
     if (!containerRef.current) {
       return
     }
+    // @ts-expect-error no error
     const containerWidth = containerRef.current.clientWidth
     const totalGaps = perPage - 1
     const availableWidth = containerWidth - (totalGaps * GAP)
@@ -40,6 +41,7 @@ export default function Swiper({controls = true, perPage = 10, children}) {
     }
     const offset = currentPage * (itemWidth + GAP) * perPage
 
+    // @ts-expect-error no error
     containerRef.current.scrollTo({
       left: offset,
       behavior: 'smooth',
