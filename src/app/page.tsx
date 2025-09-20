@@ -20,6 +20,35 @@ import Button from '@/components/server/Button'
 import EventItem from '@/components/client/Event/EventItem'
 
 const gcURL = process.env.GCS_URL;
+const transfers = [
+  {
+    qrcode: '/qr-dizimo-bradesco.png',
+    pix: 'igrejanovabatistatatuape@gmail.com',
+    pix_key_type: 'email',
+    bank: 'Bradesco',
+    bank_icon: '/bradesco.png',
+    agency: '2423',
+    account: '53300-9',
+  },
+  {
+    qrcode: '/qr-dizimo-itau.png',
+    pix: '38.008.999/0001-98',
+    pix_key_type: 'cnpj',
+    bank: 'Itaú',
+    bank_icon: '/itau.png',
+    agency: '0452',
+    account: '35614-0',
+  }
+]
+
+function KeyValue(props: {label: string, value: string}) {
+  return (
+    <div className="flex flex-row">
+      <span className="text-sm font-semibold">{props.label}:&nbsp;</span>
+      <span className="text-sm">{props.value}</span>
+    </div>
+  )
+}
 export default async function Home() {
   let church: ChurchResponse = {} as ChurchResponse
   let visual: ChurchVisualResponse = {} as ChurchVisualResponse
@@ -140,7 +169,30 @@ export default async function Home() {
         ))}
       </section> */}
 
-      <section id="colaborate"></section>
+      <section id="colaborate">
+        <h2>Colabore</h2>
+        <div className="flex flex-col sm:flex-row justify-evenly gap-4 sm:gap-8 md:gap-12">
+          {transfers.map((transfer) => (
+            <div key={transfer.pix} className="w-full lg:w-1/2 flex flex-col items-center gap-4 mb-8 wrap-anywhere">
+              <div className="flex flex-row p-4 gap-4 rounded-md text-sm border border-[var(--background-dark)]">
+                <Image src={transfer.bank_icon} width={40} height={40} alt="" className="" style={{ objectFit: "contain" }} />
+
+                <div>
+                  <div className="flex flex-row items-center mb-2">
+                    {transfer.bank} - Ag. {transfer.agency} - Conta. {transfer.account}
+                  </div>
+
+                  <div className="">
+                    PIX ({transfer.pix_key_type})<br />
+                    {transfer.pix}
+                  </div>
+                </div>
+              </div>
+              <Image src={transfer.qrcode} width={320} height={320} alt="" />
+            </div>
+          ))}
+        </div>
+      </section>
 
       <footer className="mt-16 py-8 border-t text-gray-500">
         <div className="flex flex-row justify-between">
