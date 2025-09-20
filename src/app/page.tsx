@@ -200,33 +200,33 @@ export default async function Home() {
         </div>
       </section>
 
-      {(church.urlAppleStore || church.urlAppleStore) && (
-      <section id="app">
-        <h2>Baixe nosso app</h2>
-        <div className="flex flex-row justify-center gap-4">
-          {church.urlAppleStore && <a href={church.urlAppleStore}>
-            <picture>
-              <Image width={180} height={56} className="app-store" src="/btnAppstore.png" alt="Download na App Store" />
-            </picture>
-          </a>
-          }
-
-          {church.urlGooglePlay && <a href={church.urlGooglePlay} target="_blank" rel="noreferrer">
-            <picture>
-              <Image width={180} height={56} className="app-store" src="/btnGoogleplay.png" alt="Download na Google Play" />
-            </picture>
-          </a>
-          }
-        </div>
-      </section>
-      )}
-
       <section id="devotional">
         <h2>Devocional</h2>
         <Swiper perPage={2}>
           {devotionals.map((devotional) => <DevotionalItem key={devotional.id} devotional={devotional} />)}
         </Swiper>
       </section>
+
+      {(church.urlAppleStore || church.urlAppleStore) && (
+        <section id="app">
+          <h2>Baixe nosso app</h2>
+          <div className="flex flex-row justify-center gap-4">
+            {church.urlAppleStore && <a href={church.urlAppleStore}>
+              <picture>
+                <Image width={180} height={56} className="app-store" src="/btnAppstore.png" alt="Download na App Store" />
+              </picture>
+            </a>
+            }
+
+            {church.urlGooglePlay && <a href={church.urlGooglePlay} target="_blank" rel="noreferrer">
+              <picture>
+                <Image width={180} height={56} className="app-store" src="/btnGoogleplay.png" alt="Download na Google Play" />
+              </picture>
+            </a>
+            }
+          </div>
+        </section>
+      )}
 
       <footer className="mt-16 py-8 border-t text-gray-500">
         <div className="flex flex-row justify-between">
