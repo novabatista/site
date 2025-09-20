@@ -86,7 +86,7 @@ export default function EventItem(props:EventItemProps) {
               <div className="w-full flex justify-center my-4">
                 <img src={event.image._optimized[0].url} alt={event.nome} className="object-cover w-full h-[300px]"/>
               </div>
-              <div className="description mt-6" dangerouslySetInnerHTML={{__html: loadedEvent?.descricao}} />
+              <div className="description mt-6" dangerouslySetInnerHTML={{__html: loadedEvent?.descricao ?? ''}} />
             </>)}
         </div>
       </ModalInterface>
