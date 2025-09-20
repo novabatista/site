@@ -10,7 +10,7 @@ import {
   inPeaceServicePrayers,
   inPeaceServiceMinistries,
   inPeaceServiceVisual,
-  inPeaceServiceWorshipDates,
+  inPeaceServiceWorshipDates, inPeaceServiceDevocional,
 } from '@/service/inpeace'
 import {YoutubeItemEntry, YoutubeItensList} from '@/interface/youtube/search'
 import {youtubeServiceLive, youtubeServiceRecents} from '@/service/youtube'
@@ -18,6 +18,9 @@ import {formateDateLocale} from '@/date/date'
 import {MinistriesResponse} from '@/interface/inpeace/ministrie'
 import Button from '@/components/server/Button'
 import EventItem from '@/components/client/Event/EventItem'
+import {Devotional, DevotionalsResponse} from '@/interface/inpeace/devotional'
+import Swiper from "@/components/client/Swiper/Swiper";
+import DevotionalItem from '@/components/client/Devotional/DevotionalItem'
 
 const gcURL = process.env.GCS_URL;
 const transfers = [
@@ -56,6 +59,7 @@ export default async function Home() {
   let worships: WorshipResponse[] = []
   // let prayers: PrayerResponse[] = []
   let ministries: MinistriesResponse = []
+  let devotionals: Devotional[] = []
 
   let latestVideos: YoutubeItensList = []
   let liveVideo: YoutubeItemEntry | undefined = undefined
@@ -66,6 +70,7 @@ export default async function Home() {
   // const fetchPrayers = async () => (prayers = await inPeaceServicePrayers());
   const fetchChurchInfo = async () => (church = await inPeaceServiceChurchInfo());
   const fetchMinistries = async () => (ministries = await inPeaceServiceMinistries());
+  const fetchDevotionals = async () => (devotionals = await inPeaceServiceDevocional());
 
   const fetchLatestVideos = async () => (latestVideos = await youtubeServiceRecents());
   const fetchLiveVideo = async () => (liveVideo = await youtubeServiceLive());
@@ -78,6 +83,7 @@ export default async function Home() {
     // fetchPrayers(),
     fetchChurchInfo(),
     fetchMinistries(),
+    fetchDevotionals(),
     // --
     fetchLatestVideos(),
     fetchLiveVideo(),
@@ -197,7 +203,6 @@ export default async function Home() {
       {(church.urlAppleStore || church.urlAppleStore) && (
       <section id="app">
         <h2>Baixe nosso app</h2>
-        <p className="">E nos leve para qualquer lugar</p>
         <div className="flex flex-row justify-center gap-4">
           {church.urlAppleStore && <a href={church.urlAppleStore}>
             <picture>
@@ -215,6 +220,13 @@ export default async function Home() {
         </div>
       </section>
       )}
+
+      <section id="devotional">
+        <h2>Devocional</h2>
+        <Swiper perPage={2}>
+          {devotionals.map((devotional) => <DevotionalItem key={devotional.id} devotional={devotional} />)}
+        </Swiper>
+      </section>
 
       <footer className="mt-16 py-8 border-t text-gray-500">
         <div className="flex flex-row justify-between">
