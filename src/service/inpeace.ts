@@ -9,10 +9,11 @@ import event from '../../mocks/event.json'
 import prayer from '../../mocks/prayer.json'
 import visual from '../../mocks/visual.json'
 import worship from '../../mocks/worship.json'
+import ministrie from '../../mocks/ministrie.json'
 import devotional from '../../mocks/devotional.json'
 import fetcher from '@/http/fetcher'
 import {MinistriesResponse} from '@/interface/inpeace/ministrie'
-import {Devotional, DevotionalsResponse} from '@/interface/inpeace/devotional'
+import {Devotional} from '@/interface/inpeace/devotional'
 
 const {
   INPEACE_CHURCH_ID,
@@ -59,7 +60,7 @@ export function inPeaceServiceChurchInfo(): Promise<ChurchResponse> {
   return simpleFetch<ChurchResponse>(`${INPEACE_API_URL}/igreja/${INPEACE_CHURCH_ID}`)
 }
 export function inPeaceServiceMinistries(): Promise<MinistriesResponse> {
-  // return Promise.resolve(church)
+  return Promise.resolve(ministrie as MinistriesResponse)
   return simpleFetch<MinistriesResponse>(`${INPEACE_API_URL}/ministerio/${INPEACE_CHURCH_SLUG}`)
 }
 export function inPeaceServiceDevocional(): Promise<Devotional[]> {

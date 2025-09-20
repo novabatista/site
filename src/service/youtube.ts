@@ -4,10 +4,8 @@ import {YoutubeItemEntry, YoutubeItensList, YoutubeRawSearchResponse} from '@/in
 
 /** @see https://developers.google.com/youtube/v3/docs */
 
-const {
-  YOUTUBE_API_KEY,
-  YOUTUBE_CHANNEL_ID,
-} = process.env;
+const {YOUTUBE_API_KEY,} = process.env;
+const YOUTUBE_CHANNEL_ID = 'UCZ214Av_rlKuad1nIyXMnyA'
 export async function youtubeServiceSearch(params: QueryStringObject = {}): Promise<YoutubeItensList>{
   const queryString = objectToQueryString({
     ...params,
