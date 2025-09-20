@@ -9,8 +9,8 @@ export interface EventResponse {
   igreja: any
   local: any
   // so vai ter valor quando pegar o evento pelo id
-  descricao: string
-  enderecos: Address[]
+  descricao?: string
+  enderecos?: Address[]
 }
 
 export interface Image {
