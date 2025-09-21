@@ -1,6 +1,6 @@
 'use client'
 
-import {useState, useRef, useEffect} from 'react'
+import {useState, useRef, useEffect, useMemo} from 'react'
 import useBreakpoint, {MatcherEntries} from '@/hook/useBreakpoint'
 
 interface SwiperProps {
@@ -18,13 +18,15 @@ export default function Swiper(props: SwiperProps) {
   const [itemWidth, setItemWidth] = useState(0)
   const breakpoint = useBreakpoint()
 
-  let perPageCount = 10;
+  const perPageCount = useMemo(() => {
+    if (typeof perPage === 'number') {
+      return perPage;
+    } else if (perPage) {
+      return breakpoint.matcher(perPage) || 1;
+    }
+    return 10;
+  }, [perPage, breakpoint.current.label]);
 
-  if(typeof perPage === 'number'){
-    perPageCount = perPage
-  }else if(perPage){
-    perPageCount = breakpoint.matcher(perPage)
-  }
 
   const itemsSize = children.length
   const totalPages = Math.ceil( itemsSize/ perPageCount)
@@ -43,6 +45,7 @@ export default function Swiper(props: SwiperProps) {
   }
 
   useEffect(() => {
+    console.log('perPageCount', perPageCount)
     if (!containerRef.current) {
       return
     }
@@ -51,7 +54,10 @@ export default function Swiper(props: SwiperProps) {
     const totalGaps = perPageCount - 1
     const availableWidth = containerWidth - (totalGaps * GAP)
     setItemWidth(Math.floor(availableWidth / perPageCount))
-  }, [perPage])
+    console.log('itemWidth', Math.floor(availableWidth / perPageCount))
+
+    // @ts-expect-error no error
+  }, [perPageCount, containerRef.current?.clientWidth]);
 
   useEffect(() => {
     if (!containerRef.current) {

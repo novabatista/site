@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
-enum BreakpointEnum {
+export enum BreakpointEnum {
   base = "base",
   sm = "sm",
   md = "md",
@@ -27,73 +27,81 @@ type BreakpointEntry = {
 
 export type MatcherEntries = Partial<Record<BreakpointEnum, any>>;
 
+function getBreakpointForWidth(windowWidth: number): BreakpointEntry {
+  let curBreakpointLabel = BreakpointEnum.base;
+  let curBreakpointSize = 0;
+  let biggestBreakpointValue = 0;
+
+  for (const [breakpoint, size] of Object.entries(BreakpointEnumSize)) {
+    if (size > biggestBreakpointValue && windowWidth >= size) {
+      biggestBreakpointValue = size;
+      curBreakpointLabel = breakpoint as BreakpointEnum;
+      curBreakpointSize = size;
+    }
+  }
+
+  return {
+    label: curBreakpointLabel,
+    size: curBreakpointSize,
+  };
+}
+
 export default function useBreakpoint() {
-  const [current, setCurrent] = useState<BreakpointEntry>({
-    label: "",
-    size: 0,
-  });
-
-  const [is, setIs] = useState<Record<BreakpointEnum, boolean>>({
-    [BreakpointEnum.sm]: false,
-    [BreakpointEnum.md]: false,
-    [BreakpointEnum.lg]: false,
-    [BreakpointEnum.xl]: false,
-    [BreakpointEnum.xl2]: false,
-    [BreakpointEnum.base]: false,
-  });
-
-  const getCurrentBreakpoint = (): BreakpointEntry => {
+  const initialBreakpoint = useMemo(() => {
     if (typeof window === 'undefined') {
       return { label: BreakpointEnum.base, size: 0 };
     }
+    return getBreakpointForWidth(window.innerWidth);
+  }, []);
 
-    let curBreakpointLabel = BreakpointEnum.base;
-    let curBreakpointSize = 0;
-    let biggestBreakpointValue = 0;
+  const [current, setCurrent] = useState<BreakpointEntry>(initialBreakpoint);
 
-    const windowWidth = window.innerWidth;
+  const [is, setIs] = useState<Record<BreakpointEnum, boolean>>(() => {
+    const initialIs = {
+      [BreakpointEnum.base]: false,
+      [BreakpointEnum.sm]: false,
+      [BreakpointEnum.md]: false,
+      [BreakpointEnum.lg]: false,
+      [BreakpointEnum.xl]: false,
+      [BreakpointEnum.xl2]: false,
+    };
 
-    for (const [breakpoint, size] of Object.entries(BreakpointEnumSize)) {
-      if (size > biggestBreakpointValue && windowWidth >= size) {
-        biggestBreakpointValue = size;
-        curBreakpointLabel = breakpoint as BreakpointEnum;
-        curBreakpointSize = size;
-      } else if (windowWidth < BreakpointEnumSize[BreakpointEnum.sm]) {
-        curBreakpointLabel = BreakpointEnum.base;
-        curBreakpointSize = 0;
-        break;
-      }
+    if (initialBreakpoint.label) {
+      initialIs[initialBreakpoint.label as BreakpointEnum] = true;
     }
 
-    return {
-      label: curBreakpointLabel,
-      size: curBreakpointSize,
-    };
-  };
+    return initialIs;
+  });
 
-  const isBreakpoint = (targetBP: BreakpointEnum, actualBP: string): boolean => {
-    return targetBP === actualBP;
+  const getCurrentBreakpoint = (): BreakpointEntry => {
+    return current;
   };
 
   const updateBreakpoint = () => {
-    const bp = getCurrentBreakpoint();
+    if (typeof window === 'undefined') return;
+
+    const bp = getBreakpointForWidth(window.innerWidth);
 
     setCurrent(bp);
     setIs({
-      [BreakpointEnum.base]: isBreakpoint(BreakpointEnum.base, bp.label),
-      [BreakpointEnum.sm]: isBreakpoint(BreakpointEnum.sm, bp.label),
-      [BreakpointEnum.md]: isBreakpoint(BreakpointEnum.md, bp.label),
-      [BreakpointEnum.lg]: isBreakpoint(BreakpointEnum.lg, bp.label),
-      [BreakpointEnum.xl]: isBreakpoint(BreakpointEnum.xl, bp.label),
-      [BreakpointEnum.xl2]: isBreakpoint(BreakpointEnum.xl2, bp.label),
+      [BreakpointEnum.base]: false,
+      [BreakpointEnum.sm]: false,
+      [BreakpointEnum.md]: false,
+      [BreakpointEnum.lg]: false,
+      [BreakpointEnum.xl]: false,
+      [BreakpointEnum.xl2]: false,
+      [bp.label as BreakpointEnum]: true,
     });
   };
 
   /**
+   * Match responsive values based on the current breakpoint
+   *
+   * Examples:
    * ```
-   * breakpointMatcher({sm: 1, md: 2})
-   * breakpointMatcher({lg: 'foo', md: 'bar', 'sm': 'baz'})
-   * breakpointMatcher({sm: ()=>{someprocessing})
+   * matcher({sm: 1, md: 2})
+   * matcher({lg: 'foo', md: 'bar', 'sm': 'baz'})
+   * matcher({sm: ()=>{someprocessing})
    * ```
    * */
   const matcher = (entries: MatcherEntries) => {
@@ -122,8 +130,6 @@ export default function useBreakpoint() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      updateBreakpoint();
-
       window.addEventListener("resize", updateBreakpoint);
 
       return () => {
