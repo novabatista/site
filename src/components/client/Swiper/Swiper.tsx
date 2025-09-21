@@ -1,17 +1,35 @@
 'use client'
 
 import {useState, useRef, useEffect} from 'react'
+import useBreakpoint, {MatcherEntries} from '@/hook/useBreakpoint'
+
+interface SwiperProps {
+  children: React.ReactNode[]
+  controls?: boolean
+  perPage?: number | MatcherEntries
+}
 
 const GAP = 8
-export default function Swiper({controls = true, perPage = 10, children}) {
+export default function Swiper(props: SwiperProps) {
+  const {children, controls = true, perPage} = props
+
   const containerRef = useRef(null)
   const [currentPage, setCurrentPage] = useState(0)
   const [itemWidth, setItemWidth] = useState(0)
+  const breakpoint = useBreakpoint()
+
+  let perPageCount = 10;
+
+  if(typeof perPage === 'number'){
+    perPageCount = perPage
+  }else if(perPage){
+    perPageCount = breakpoint.matcher(perPage)
+  }
 
   const itemsSize = children.length
-  const totalPages = Math.ceil( itemsSize/ perPage)
+  const totalPages = Math.ceil( itemsSize/ perPageCount)
 
-  const isControlsVisible = controls && itemsSize > perPage
+  const isControlsVisible = controls && itemsSize > perPageCount
 
 
   const handlePrevItem = () => {
@@ -30,23 +48,23 @@ export default function Swiper({controls = true, perPage = 10, children}) {
     }
     // @ts-expect-error no error
     const containerWidth = containerRef.current.clientWidth
-    const totalGaps = perPage - 1
+    const totalGaps = perPageCount - 1
     const availableWidth = containerWidth - (totalGaps * GAP)
-    setItemWidth(Math.floor(availableWidth / perPage))
+    setItemWidth(Math.floor(availableWidth / perPageCount))
   }, [perPage])
 
   useEffect(() => {
     if (!containerRef.current) {
       return
     }
-    const offset = currentPage * (itemWidth + GAP) * perPage
+    const offset = currentPage * (itemWidth + GAP) * perPageCount
 
     // @ts-expect-error no error
     containerRef.current.scrollTo({
       left: offset,
       behavior: 'smooth',
     })
-  }, [currentPage, perPage, itemWidth])
+  }, [currentPage, perPageCount, itemWidth])
 
 
   return (

@@ -3,7 +3,7 @@ export default function Footer({church, ministries, worships}) {
 
   return (
     <footer className="mt-16 py-8 border-t text-gray-500">
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-col md:flex-row justify-between gap-8">
         <div className="">
           <h4 className="text-xl font-semibold">Programação</h4>
           <ul className="list-none mt-2 grid grid-cols-1 gap-2">
@@ -17,7 +17,7 @@ export default function Footer({church, ministries, worships}) {
 
         <div className="">
           <h4 className="text-xl font-semibold">Links</h4>
-          <ul className="list-none mt-2 grid grid-cols-1 gap-2">
+          <ul className="list-none mt-2 grid grid-cols-3 md:grid-cols-1 gap-2">
             <li>
               <a href="https://linktr.ee/novabatistadotatuape" target="_blank" rel="noreferrer">
                 Linktree

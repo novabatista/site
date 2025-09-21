@@ -194,7 +194,10 @@ export default async function Home() {
 
       <section id="devotional">
         <h2>Devocional</h2>
-        <Swiper perPage={2}>
+        <Swiper perPage={{
+          'base': 1,
+          'sm': 2,
+        }}>
           {devotionals.map((devotional) => <DevotionalItem key={devotional.id} devotional={devotional} />)}
         </Swiper>
       </section>
