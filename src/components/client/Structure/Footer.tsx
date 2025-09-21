@@ -1,5 +1,3 @@
-import Image from 'next/image'
-
 export default function Footer({church, ministries, worships}) {
   const churchDirectionUrl = `https://www.google.com/maps/dir//${church.latitude},${church.longitude}`
 
