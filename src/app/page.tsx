@@ -21,6 +21,9 @@ import EventItem from '@/components/client/Event/EventItem'
 import {Devotional, DevotionalsResponse} from '@/interface/inpeace/devotional'
 import Swiper from "@/components/client/Swiper/Swiper";
 import DevotionalItem from '@/components/client/Devotional/DevotionalItem'
+import Main from '@/components/client/Structure/Main'
+import Footer from '@/components/client/Structure/Footer'
+import Header from '@/components/client/Structure/Header'
 
 const gcURL = process.env.GCS_URL;
 const transfers = [
@@ -89,7 +92,6 @@ export default async function Home() {
     fetchLiveVideo(),
   ])
 
-  const churchDirectionUrl = `https://www.google.com/maps/dir//${church.latitude},${church.longitude}`
   const featuredVideo = liveVideo ?? latestVideos.shift()
   latestVideos = latestVideos.slice(0, 3)
 
@@ -105,10 +107,8 @@ export default async function Home() {
   }
 
   return (
-    <main className="w-11/12 sm:max-w-10/12 md:max-w-8/12 m-auto">
-      <header className="flex justify-center items-center">
-        <Image src={visual.logomarcaMenu._optimized[0].url} width={200} height={65} alt="Nova Batista" />
-      </header>
+    <Main>
+      <Header visual={visual} />
 
       {(featuredVideo) && <section id="video-featured" className="">
         <div className="w-full h-[80vh] mb-4">
@@ -228,60 +228,8 @@ export default async function Home() {
         </section>
       )}
 
-      <footer className="mt-16 py-8 border-t text-gray-500">
-        <div className="flex flex-row justify-between">
-          <div className="">
-            <h4 className="text-xl font-semibold">Programação</h4>
-            <ul className="list-none mt-2 grid grid-cols-1 gap-2">
-              {worships.map((worship) => (
-                <li key={worship.id}>
-                  {worship.descricao}
-                </li>
-              ))}
-            </ul>
-          </div>
+      <Footer {...({church, ministries, worships})} />
 
-          <div className="">
-            <h4 className="text-xl font-semibold">Links</h4>
-            <ul className="list-none mt-2 grid grid-cols-1 gap-2">
-              <li>
-                <a href="https://linktr.ee/novabatistadotatuape" target="_blank" rel="noreferrer">
-                  Linktree
-                </a>
-              </li>
-              <li>
-                <a href="https://www.instagram.com/novabatistatatuape/" target="_blank" rel="noreferrer">
-                  Instagram
-                </a>
-              </li>
-              <li>
-                <a href="https://www.youtube.com/@novabatistadotatuape" target="_blank" rel="noreferrer">
-                  YouTube
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="">
-            <h4 className="text-xl font-semibold">Ministérios</h4>
-            <ul className="list-none mt-2 grid grid-cols-2 gap-2">
-              {ministries.map((entry) => (
-                <li key={entry.id}>
-                  {entry.nome.replace(/Ministério\s?(de\s?)?/, '')}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-6 text-center">
-          <a href={churchDirectionUrl} target="_blank">{church.endereco}</a>
-        </div>
-
-        <div className="mt-2 text-xs text-center">
-          &copy; {new Date().getFullYear()} {church.nome || "Igreja"} - Todos os direitos reservados. | Powered by <a href="https://www.inpeace.com.br" target="_blank" rel="noopener noreferrer" className="hover:underline">Inpeace</a>
-        </div>
-      </footer>
-    </main>
+    </Main>
   );
 }
