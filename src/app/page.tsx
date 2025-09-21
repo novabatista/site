@@ -47,17 +47,9 @@ const transfers = [
   }
 ]
 
-function KeyValue(props: {label: string, value: string}) {
-  return (
-    <div className="flex flex-row">
-      <span className="text-sm font-semibold">{props.label}:&nbsp;</span>
-      <span className="text-sm">{props.value}</span>
-    </div>
-  )
-}
 export default async function Home() {
   let church: ChurchResponse = {} as ChurchResponse
-  let visual: ChurchVisualResponse = {} as ChurchVisualResponse
+  // let visual: ChurchVisualResponse = {} as ChurchVisualResponse
   let events: EventResponse[] = []
   let worships: WorshipResponse[] = []
   // let prayers: PrayerResponse[] = []
@@ -67,7 +59,7 @@ export default async function Home() {
   let latestVideos: YoutubeItensList = []
   let liveVideo: YoutubeItemEntry | undefined = undefined
 
-  const fetchVisual = async () => (visual = await inPeaceServiceVisual())
+  // const fetchVisual = async () => (visual = await inPeaceServiceVisual())
   const fetchEvents = async () => (events = await inPeaceServiceEvents());
   const fetchWorshipDates = async () => (worships = await inPeaceServiceWorshipDates());
   // const fetchPrayers = async () => (prayers = await inPeaceServicePrayers());
@@ -80,7 +72,7 @@ export default async function Home() {
 
 
   await Promise.allSettled([
-    fetchVisual(),
+    // fetchVisual(),
     fetchEvents(),
     fetchWorshipDates(),
     // fetchPrayers(),
@@ -108,7 +100,7 @@ export default async function Home() {
 
   return (
     <Main>
-      <Header visual={visual} />
+      <Header />
 
       {(featuredVideo) && <section id="video-featured" className="">
         <div className="w-full h-[80vh] mb-4">

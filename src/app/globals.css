@@ -8,6 +8,8 @@
   --foreground: #030303;
   --foreground-light: color-mix(in srgb, var(--foreground), white 20%);
   --foreground-dark: color-mix(in srgb, var(--foreground), black 20%);
+
+  --header-logo: url('/logo-nova_black.png');
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,6 +21,8 @@
     --foreground: #fafafa;
     --foreground-light: color-mix(in srgb, var(--foreground), white 20%);
     --foreground-dark: color-mix(in srgb, var(--foreground), black 20%);
+
+    --header-logo: url('/logo-nova_white.png');
   }
 }
 
@@ -48,6 +52,10 @@ section > p {
   margin-bottom: 0.8rem;
 }
 
+#header-logo-container {
+  background: no-repeat var(--header-logo);
+  background-size: cover;
+}
 
 #event-detail {
 
