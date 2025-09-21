@@ -20,7 +20,7 @@ export async function youtubeServiceSearch(params: QueryStringObject = {}): Prom
 export async function youtubeServiceLive(): Promise<YoutubeItemEntry|undefined>{
   const today = new Date()
   const weekday = today.getDay()
-  const notWorshipDay = [0, 3].includes(weekday)
+  const notWorshipDay = ![0, 3].includes(weekday)
   if(notWorshipDay){
     return
   }
