@@ -53,7 +53,7 @@ export default function Footer({church, ministries, worships}) {
       </div>
 
       <div className="mt-2 text-xs text-center">
-        &copy; {new Date().getFullYear()} {church.nome || "Igreja"} - Todos os direitos reservados. | Powered by <a href="https://www.inpeace.com.br" target="_blank" rel="noopener noreferrer" className="hover:underline">Inpeace</a>
+        &copy; {new Date().getFullYear()} {church.nome || "Igreja"} - Todos os direitos reservados. | Powered by <a href="https://inpeaceapp.com" target="_blank" rel="noopener noreferrer" className="hover:underline">Inpeace</a>
       </div>
     </footer>
   )
