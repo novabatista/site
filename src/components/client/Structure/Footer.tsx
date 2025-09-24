@@ -1,4 +1,18 @@
-export default function Footer({church, ministries, worships}) {
+import loader from '@/loader/loader'
+
+export default async function Footer() {
+  const assets = await loader.load({
+    church: true,
+    ministries: true,
+    worships: true,
+  })
+
+  const {
+    church,
+    ministries,
+    worships,
+  } = assets
+
   const churchDirectionUrl = `https://www.google.com/maps/dir//${church.latitude},${church.longitude}`
 
   return (

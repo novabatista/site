@@ -1,29 +1,13 @@
-import Image from "next/image";
-import {ChurchVisualResponse} from '@/interface/inpeace/visual'
-import {EventResponse} from '@/interface/inpeace/events'
-import {WorshipResponse} from '@/interface/inpeace/worship'
-import {PrayerResponse} from '@/interface/inpeace/prayer'
-import {ChurchResponse} from '@/interface/inpeace/church'
-import {
-  inPeaceServiceChurchInfo,
-  inPeaceServiceEvents,
-  inPeaceServicePrayers,
-  inPeaceServiceMinistries,
-  inPeaceServiceVisual,
-  inPeaceServiceWorshipDates, inPeaceServiceDevocional,
-} from '@/service/inpeace'
-import {YoutubeItemEntry, YoutubeItensList} from '@/interface/youtube/search'
-import {youtubeServiceLive, youtubeServiceRecents} from '@/service/youtube'
-import {formateDateLocale} from '@/date/date'
-import {MinistriesResponse} from '@/interface/inpeace/ministrie'
+import Image from 'next/image'
+import {YoutubeItemEntry} from '@/interface/youtube/search'
 import Button from '@/components/server/Button'
 import EventItem from '@/components/client/Event/EventItem'
-import {Devotional, DevotionalsResponse} from '@/interface/inpeace/devotional'
-import Swiper from "@/components/client/Swiper/Swiper";
+import Swiper from '@/components/client/Swiper/Swiper'
 import DevotionalItem from '@/components/client/Devotional/DevotionalItem'
 import Main from '@/components/client/Structure/Main'
 import Footer from '@/components/client/Structure/Footer'
 import Header from '@/components/client/Structure/Header'
+import loader from '@/loader/loader'
 
 const gcURL = process.env.GCS_URL;
 const transfers = [
@@ -48,42 +32,22 @@ const transfers = [
 ]
 
 export default async function Home() {
-  let church: ChurchResponse = {} as ChurchResponse
-  // let visual: ChurchVisualResponse = {} as ChurchVisualResponse
-  let events: EventResponse[] = []
-  let worships: WorshipResponse[] = []
-  // let prayers: PrayerResponse[] = []
-  let ministries: MinistriesResponse = []
-  let devotionals: Devotional[] = []
+  const assets = await loader.load({
+    church: true,
+    events: true,
+    devotionals: true,
+    latestVideos: true,
+    liveVideo: true,
+  })
 
-  let latestVideos: YoutubeItensList = []
-  let liveVideo: YoutubeItemEntry | undefined = undefined
+  const {
+    church,
+    events,
+    devotionals,
+    liveVideo,
+  } = assets
 
-  // const fetchVisual = async () => (visual = await inPeaceServiceVisual())
-  const fetchEvents = async () => (events = await inPeaceServiceEvents());
-  const fetchWorshipDates = async () => (worships = await inPeaceServiceWorshipDates());
-  // const fetchPrayers = async () => (prayers = await inPeaceServicePrayers());
-  const fetchChurchInfo = async () => (church = await inPeaceServiceChurchInfo());
-  const fetchMinistries = async () => (ministries = await inPeaceServiceMinistries());
-  const fetchDevotionals = async () => (devotionals = await inPeaceServiceDevocional());
-
-  const fetchLatestVideos = async () => (latestVideos = await youtubeServiceRecents());
-  const fetchLiveVideo = async () => (liveVideo = await youtubeServiceLive());
-
-
-  await Promise.allSettled([
-    // fetchVisual(),
-    fetchEvents(),
-    fetchWorshipDates(),
-    // fetchPrayers(),
-    fetchChurchInfo(),
-    fetchMinistries(),
-    fetchDevotionals(),
-    // --
-    fetchLatestVideos(),
-    fetchLiveVideo(),
-  ])
-
+  let latestVideos = assets.latestVideos
   const featuredVideo = liveVideo ?? latestVideos.shift()
   latestVideos = latestVideos.slice(0, 3)
 
@@ -198,7 +162,7 @@ export default async function Home() {
           'base': 1,
           'sm': 2,
         }}>
-          {devotionals.map((devotional) => <DevotionalItem key={devotional.id} devotional={devotional} />)}
+          {devotionals.map((devotional) => <DevotionalItem data-id={devotional.id} key={devotional.id} devotional={devotional} />)}
         </Swiper>
       </section>
 
@@ -223,7 +187,7 @@ export default async function Home() {
         </section>
       )}
 
-      <Footer {...({church, ministries, worships})} />
+      <Footer />
 
     </Main>
   );

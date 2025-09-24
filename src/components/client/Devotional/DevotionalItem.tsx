@@ -14,7 +14,7 @@ export default function DevotionalItem({devotional}) {
 
   return (
     <>
-      <div className="p-4 border rounded flex flex-col sm:flex-row justify-between h-full gap-4 cursor-pointer" onClick={handleSelectItem}>
+      <div data-id={devotional.id} className="p-4 border rounded flex flex-col sm:flex-row justify-between h-full gap-4 cursor-pointer" onClick={handleSelectItem}>
         <div className="w-full h-full">
           <img className="w-full h-full object-cover" src={devotional.image._optimized[0].url} alt="" />
         </div>
