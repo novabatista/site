@@ -70,7 +70,7 @@ export default async function Home() {
         <div className="w-full h-[80vh] mb-4">
           <iframe
             className="w-full h-full"
-            src={`https://www.youtube.com/embed/${featuredVideo.id.videoId}?autoplay=0&mute=1`}
+            src={`https://www.youtube.com/embed/${featuredVideo.id.videoId}?autoplay=1&mute=1`}
             title="YouTube video player" frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"

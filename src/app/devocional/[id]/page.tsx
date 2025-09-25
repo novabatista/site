@@ -2,10 +2,43 @@ import Main from '@/components/client/Structure/Main'
 import Header from '@/components/client/Structure/Header'
 import {inPeaceServiceDevocional} from '@/service/inpeace'
 import Footer from '@/components/client/Structure/Footer'
+import type { Metadata, ResolvingMetadata } from 'next'
+
+let devotionals: any[] = []
+let devotional:any
+const devotionalLoader = async ()=>{
+  if(devotional){
+    return devotional
+  }
+
+  devotionals = await inPeaceServiceDevocional()
+  devotional = devotionals[0]
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  await devotionalLoader()
+
+  return {
+    title: devotional.descricao,
+    description: 'Devocional do dia',
+    openGraph: {
+      title: devotional.descricao,
+      description: 'Devocional do dia',
+      images: [
+        {
+          url: devotional.image._optimized[0].url,
+          width: 1200,
+          height: 630,
+          alt: devotional.descricao,
+        }
+      ],
+    },
+  }
+}
 
 export default async function DevocionalPage() {
-  const devotionals = await inPeaceServiceDevocional()
-  const devotional = devotionals[0]
+  await devotionalLoader()
+
   const image = devotional.image._optimized[0].url
   return (
     <Main>
