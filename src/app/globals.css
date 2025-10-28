@@ -91,3 +91,29 @@ section > p {
 }
 
 .modal .modal-content {}
+
+.quote {
+  position: relative;
+  padding: 0 2rem;
+}
+
+.quote::before {
+  content: '"';
+  position: absolute;
+  font-size: 8rem;
+  color: var(--foreground-light);
+  opacity: 0.2;
+  line-height: 1;
+  font-family: cursive;
+}
+
+.quote::before {
+  left: 0;
+  top: -1rem;
+}
+
+/*
+.quote::after {
+  right: 0;
+  bottom: -2rem;
+}*/

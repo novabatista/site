@@ -133,13 +133,21 @@ export default async function Home() {
 
       <section id="colaborate">
         <h2>Colabore</h2>
+        <div className="flex flex-row justify-center mb-8">
+          <p className="w-full sm:w-3/4 quote text-xl">
+            Ora, aquele que dá semente ao que semeia e pão para alimento, também suprirá e aumentará a vossa sementeira e multiplicará os frutos da vossa justiça.
+            <br />
+            <span className="font-bold">2 Coríntios 9:10</span>
+
+          </p>
+        </div>
         <div className="flex flex-col sm:flex-row justify-evenly gap-4 sm:gap-8 md:gap-12">
           {transfers.map((transfer) => (
-            <div key={transfer.pix} className="w-full lg:w-1/2 flex flex-col items-center gap-4 mb-8 wrap-anywhere">
-              <div className="flex flex-row p-4 gap-4 rounded-md text-sm border border-[var(--background-dark)]">
-                <Image src={transfer.bank_icon} width={40} height={40} alt="" className="" style={{ objectFit: "contain" }} />
+            <div key={transfer.pix} className="w-full flex flex-col items-center mb-8 rounded-lg border-1 border-[var(--background-dark)] shadow-lg overflow-hidden">
+              <div className="flex flex-row p-4 gap-4  text-sm">
+                <Image src={transfer.bank_icon} width={75} height={75} alt="" className="" style={{ objectFit: "contain" }} />
 
-                <div>
+                <div className="flex-1">
                   <div className="flex flex-row items-center mb-2">
                     {transfer.bank} - Ag. {transfer.agency} - Conta. {transfer.account}
                   </div>
@@ -150,7 +158,9 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
-              <Image src={transfer.qrcode} width={320} height={320} alt="" />
+              <div className="w-full bg-white text-center flex place-content-center">
+              <Image src={transfer.qrcode} width={400} height={400} alt="" />
+              </div>
             </div>
           ))}
         </div>
