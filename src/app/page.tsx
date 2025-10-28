@@ -92,7 +92,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="devotional">
+      {devotionals?.length>0 && <section id="devotional">
         <h2>Devocional</h2>
         <Swiper perPage={{
           'base': 1,
@@ -100,7 +100,7 @@ export default async function Home() {
         }}>
           {devotionals.map((devotional) => <DevotionalItem data-id={devotional.id} key={devotional.id} devotional={devotional} />)}
         </Swiper>
-      </section>
+      </section>}
 
       <section id="gcs" className="">
         <h2>GCs</h2>
@@ -120,12 +120,12 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="events">
+      {events?.length>0 && (<section id="events">
         <h2>Eventos</h2>
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {events.map((event) => <EventItem key={event.id} event={event} />)}
         </div>
-      </section>
+      </section>)}
 
       {/* <section id="prayers" className="grid grid-cols-3 gap-4">
         {prayers.map((pray) => (
