@@ -92,11 +92,14 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="events">
-        <h2>Eventos</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          {events.map((event) => <EventItem key={event.id} event={event} />)}
-        </div>
+      <section id="devotional">
+        <h2>Devocional</h2>
+        <Swiper perPage={{
+          'base': 1,
+          'sm': 2,
+        }}>
+          {devotionals.map((devotional) => <DevotionalItem data-id={devotional.id} key={devotional.id} devotional={devotional} />)}
+        </Swiper>
       </section>
 
       <section id="gcs" className="">
@@ -115,7 +118,13 @@ export default async function Home() {
         <div className="mt-2 text-center">
           <Button asLink href={gcURL}>venha conhecer um GC</Button>
         </div>
+      </section>
 
+      <section id="events">
+        <h2>Eventos</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {events.map((event) => <EventItem key={event.id} event={event} />)}
+        </div>
       </section>
 
       {/* <section id="prayers" className="grid grid-cols-3 gap-4">
@@ -164,16 +173,6 @@ export default async function Home() {
             </div>
           ))}
         </div>
-      </section>
-
-      <section id="devotional">
-        <h2>Devocional</h2>
-        <Swiper perPage={{
-          'base': 1,
-          'sm': 2,
-        }}>
-          {devotionals.map((devotional) => <DevotionalItem data-id={devotional.id} key={devotional.id} devotional={devotional} />)}
-        </Swiper>
       </section>
 
       {(church.urlAppleStore || church.urlAppleStore) && (
