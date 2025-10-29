@@ -17,19 +17,21 @@ const devotionalLoader = async ()=>{
 
 export async function generateMetadata(): Promise<Metadata> {
   await devotionalLoader()
+  const title = devotional.descricao
+  const description = devotional.conteudo.substring(0, 80)+'...'
 
   return {
-    title: devotional.descricao,
-    description: 'Devocional do dia',
+    title,
+    description,
     openGraph: {
-      title: devotional.descricao,
-      description: 'Devocional do dia',
+      title,
+      description,
       images: [
         {
           url: devotional.image._optimized[0].url,
           width: 1200,
           height: 630,
-          alt: devotional.descricao,
+          alt: title,
         }
       ],
     },
