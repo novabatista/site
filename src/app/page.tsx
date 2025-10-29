@@ -31,6 +31,7 @@ const transfers = [
   }
 ]
 
+export const dynamic = 'force-dynamic'
 export default async function Home() {
   const assets = await loader.load({
     church: true,

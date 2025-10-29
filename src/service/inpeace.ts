@@ -27,9 +27,6 @@ async function simpleFetch<Response>(url: string, rootProp?:string): Promise<Res
   const response = await fetcher.get(url)
 
   if(rootProp){
-    if(rootProp === 'devocionais'){
-      console.log('devocionais', response, url)
-    }
     return response[rootProp];
   }
   return response;
