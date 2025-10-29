@@ -2,7 +2,7 @@ import Main from '@/components/client/Structure/Main'
 import Header from '@/components/client/Structure/Header'
 import {inPeaceServiceDevocional} from '@/service/inpeace'
 import Footer from '@/components/client/Structure/Footer'
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata } from 'next'
 
 let devotionals: any[] = []
 let devotional:any

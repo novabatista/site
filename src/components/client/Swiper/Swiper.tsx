@@ -25,7 +25,7 @@ export default function Swiper(props: SwiperProps) {
       return breakpoint.matcher(perPage) || 1;
     }
     return 10;
-  }, [perPage, breakpoint.current.label]);
+  }, [perPage, breakpoint]);
 
 
   const itemsSize = children.length

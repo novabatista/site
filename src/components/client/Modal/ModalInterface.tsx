@@ -3,7 +3,7 @@
 export default function ModalInterface(props) {
   const { children, open, onClose, title } = props;
 
-  const handleClose = () => {}
+  // const handleClose = () => {}
 
   if(!open){
     return null;
