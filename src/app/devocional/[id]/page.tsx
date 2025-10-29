@@ -18,7 +18,7 @@ const devotionalLoader = async ()=>{
 export async function generateMetadata(): Promise<Metadata> {
   await devotionalLoader()
   const title = devotional.descricao
-  const description = devotional.conteudo.substring(0, 80)+'...'
+  const description = devotional.conteudo.replace(/<[^>]*>/g, '').substring(0, 120)+'...'
 
   return {
     title,
