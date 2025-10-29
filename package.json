@@ -6,6 +6,7 @@
     "dev": "next dev --port 7772 --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
+    "local:production": "NODE_ENV=production npm run build && next start --port 7777",
     "lint": "eslint"
   },
   "dependencies": {
