@@ -8,6 +8,7 @@ import Main from '@/components/client/Structure/Main'
 import Footer from '@/components/client/Structure/Footer'
 import Header from '@/components/client/Structure/Header'
 import loader from '@/loader/loader'
+import GCEmbed from '@/components/client/GCEmbed/GCEmbed'
 
 const gcURL = process.env.GCS_URL;
 const transfers = [
@@ -30,6 +31,8 @@ const transfers = [
     account: '35614-0',
   }
 ]
+
+
 
 export const dynamic = 'force-dynamic'
 export default async function Home() {
@@ -108,13 +111,7 @@ export default async function Home() {
         <p>
           Um GC (Grupo de Crescimento) é como a igreja se encontra nas casas, exatamente como foi pensado na Bíblia. É o lugar onde você não é apenas mais um na multidão, mas alguém que vai ser cuidado, ouvido e acompanhado de perto.
         </p>
-        <iframe
-          className="w-full h-[220px]"
-          src={`${gcURL}/embed?type=carousel&map=0`}
-          title="YouTube video player" frameBorder="0"
-          allow="clipboard-write; encrypted-media; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          ></iframe>
+        <GCEmbed gcURL={gcURL} />
 
         <div className="mt-2 text-center">
           <Button asLink href={gcURL}>venha conhecer um GC</Button>
