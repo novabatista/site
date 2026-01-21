@@ -45,7 +45,6 @@ export default function Swiper(props: SwiperProps) {
   }
 
   useEffect(() => {
-    console.log('perPageCount', perPageCount)
     if (!containerRef.current) {
       return
     }
@@ -54,7 +53,6 @@ export default function Swiper(props: SwiperProps) {
     const totalGaps = perPageCount - 1
     const availableWidth = containerWidth - (totalGaps * GAP)
     setItemWidth(Math.floor(availableWidth / perPageCount))
-    console.log('itemWidth', Math.floor(availableWidth / perPageCount))
 
     // @ts-expect-error no error
   }, [perPageCount, containerRef.current?.clientWidth]);
