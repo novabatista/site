@@ -22,16 +22,17 @@ const getClass = (extraClass) => ([
 
 
 export default function Button(props) {
-  const Component = props.asLink ? 'a' : 'button'
+  const { asLink, label, children, icon, className, ...restProps } = props
+  const Component = asLink ? 'a' : 'button'
   return (
     <Component
       type="button"
-      {...props}
-      className={getClass(props.className)}
+      {...restProps}
+      className={getClass(className)}
     >
-      {props.label}
-      {props.children}
-      {props.icon && <i className={`${props.icon} text-2xl mr-1`} />}
+      {label}
+      {children}
+      {icon && <i className={`${icon} text-2xl mr-1`} />}
     </Component>
   )
 }
